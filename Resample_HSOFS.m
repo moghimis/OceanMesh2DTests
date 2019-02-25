@@ -1,12 +1,16 @@
 addpath(genpath('OceanMesh2D/'));
-addpath(genpath('external/'));
-wl=30;dt=0;grade=0.25;R=5;slp=15; 
-bbox = [-100 -53
-          5 52.5];
+addpath(genpath('third-party/'));
+addpath(genpath('datasets/'));
+wl=30;
+dt=0;
+grade=0.25;
+R=5;
+slp=15; 
+bbox = [-100 -53; 5 52.5];
 min_el = 1000;
 max_el = 10000;
-coastline = 'datasets/GSHHS_f_L1';
-dem       = 'datasets/topo15_compressed.nc';
+coastline = 'GSHHS_f_L1';
+dem       = 'topo15_compressed.nc';
 gdat{1} = geodata('shp',coastline,'dem',dem,'bbox',bbox,'h0',min_el);
 fh{1} = edgefx('geodata',gdat{1},'fs',R,'wl',wl,'slp',slp,...
                 'max_el',max_el,'dt',dt,'g',grade);
@@ -31,22 +35,10 @@ for ii = 1:length(dems)
                     'dt',dt,...
                     'g',grade);
 end
-
-%% Pass your edgefx class objects along with some meshing options 
-%% and build the mesh... 
-% (note that the nested edgefxs will be smoothed together with this call)
 mshopts = meshgen('ef',fh,'bou',gdat,'plot_on',1,'itmax',50);  
-                                                
-% now build the mesh with your options and the edge function.
 mshopts = mshopts.build; 
-
-% Get out the msh class from meshgen
 m = mshopts.grd;
-
-%% Interpolate on the bathy and gradients (automatically loops over all data)
 m = interp(m,gdat); 
-% % ensure max depth in domain is 1 m (we find this step useful for coastal
-% % meshes to help with connectivity through narrow channels)
 m.b = max(m.b,1); 
 
 %% Make the nodestrings
