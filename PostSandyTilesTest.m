@@ -37,12 +37,6 @@ end
 mshopts = meshgen('ef',fh,'bou',gdat,'plot_on',1,'itmax',50);  
 mshopts = mshopts.build; 
 m = mshopts.grd;shp = split(dems{i}, '/');shp = split(dems{i}, '/');
-    shp = split(shp{end}, '.nc');
-    shp = strcat(shp{1},'.shp');
-    shp = strcat('datasets/coastline_', shp);
-    shp = split(shp{end}, '.nc');
-    shp = strcat(shp{1},'.shp');
-    shp = strcat('datasets/coastline_', shp);
 m = interp(m,gdat); 
 m.b = max(m.b,1); 
 
