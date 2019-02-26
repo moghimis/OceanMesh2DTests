@@ -36,7 +36,7 @@ for i = 1:10%length(dems)
 end
 mshopts = meshgen('ef',fh,'bou',gdat,'plot_on',1,'itmax',50);  
 mshopts = mshopts.build; 
-m = mshopts.grd;shp = split(dems{i}, '/');shp = split(dems{i}, '/');
+m = mshopts.grd;
 m = interp(m,gdat); 
 m.b = max(m.b,1); 
 
